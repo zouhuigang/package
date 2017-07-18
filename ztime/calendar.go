@@ -126,7 +126,7 @@ func LimitMonth(m int) (bool, int) {
 //下一个月
 func NextMonth(y, m int) (next_year int, next_month int) {
 	_, y = LimitYear(y)
-	_, m = LimitYear(m)
+	_, m = LimitMonth(m)
 
 	next_month = m + 1
 	if next_month > 12 {
@@ -141,7 +141,7 @@ func NextMonth(y, m int) (next_year int, next_month int) {
 //上一个月
 func PreMonth(y, m int) (pre_year int, pre_month int) { //上一个月
 	_, y = LimitYear(y)
-	_, m = LimitYear(m)
+	_, m = LimitMonth(m)
 
 	pre_month = m - 1
 	if pre_month < 1 {
