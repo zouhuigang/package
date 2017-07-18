@@ -227,14 +227,15 @@ func GetTodayYMD() (y int, m int, d int, ymd string, timestamp int64) {
 	return
 }
 
-//判断输入的日期是否为当天时间ymd:2017-07-18或2017-7-18
+//判断输入的日期是否为当天时间ymd:2017-07-18或2017-7-18,不能输入2017-7-0
 func Is_Today(ymd string) bool {
 	_, _, _, _, timestamp := GetTodayYMD() //当天凌晨时间戳
 	tm := time.Unix(timestamp, 0)          //int64转time.Time
 
 	timestamp1 := Strtotime(ymd)
-	//fmt.Println(tm, timestamp1)
-	if tm == timestamp1 {
+
+	if tm.Equal(timestamp1) { //time.Time的比较不能用==来比较,在docker镜像里面会出错
+		//fmt.Printf("%v,%v\n", tm, timestamp1)
 		return true
 	}
 
