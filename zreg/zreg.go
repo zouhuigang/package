@@ -18,14 +18,14 @@ func Trim(str string) string {
 func IsNull(s string) bool {
 	s = Trim(s)
 	if s == "" {
-		return false
+		return true
 	}
 	//新加
 	if len(s) == 0 {
 		//为空的处理
-		return false
+		return true
 	}
-	return true
+	return false
 }
 
 //是手机号
@@ -42,7 +42,7 @@ func IsMobile(req *http.Request) bool {
 	mobileRe, _ := regexp.Compile("(?i:Mobile|iPod|iPhone|Android|Opera Mini|BlackBerry|webOS|UCWEB|Blazer|PSP)")
 	flagM := mobileRe.FindString(userAgent)
 
-	if IsNull(flagM) {
+	if !IsNull(flagM) {
 		return true
 	} else {
 		return false

@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"github.com/zouhuigang/zreg"
+	"github.com/zouhuigang/package/zreg"
 )
 
 func main() {
