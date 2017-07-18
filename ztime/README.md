@@ -110,3 +110,32 @@
 输出：
 
 	true,false
+
+
+### 8.时间戳转换
+
+	从字符串转为时间戳，第一个参数是格式，第二个是要转换的时间字符串
+	tm2, _ := time.Parse("01/02/2006", "02/08/2015")
+	fmt.Println(tm2.Unix())
+	fmt.Println(time.Now().Unix()) //获取当前秒
+	fmt.Println(time.Now().UnixNano())//获取当前纳秒
+	fmt.Println(time.Now().UnixNano()/1e6)//将纳秒转换为毫秒
+	fmt.Println(time.Now().UnixNano()/1e9)//将纳秒转换为秒
+	c := time.Unix(time.Now().UnixNano()/1e9,0) //将毫秒转换为 time 类型
+	fmt.Println(c.String()) //输出当前英文时间戳格式  
+
+
+### 9.当月时间段,月初-月末时间戳,方面mysql查询数据
+
+	s1, e1 := ztime.MonthStartEndOfTimeStamp(2017, 07)
+	fmt.Printf("%v %v\n", s1, e1)
+
+输出:
+
+	1498838400 1501516799
+
+分别对应：
+
+	2017/7/1 0:0:0 2017/7/31 23:59:59
+
+

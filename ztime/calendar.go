@@ -4,6 +4,7 @@
 package ztime
 
 import (
+	"fmt"
 	"strconv"
 	"time"
 )
@@ -150,5 +151,21 @@ func PreMonth(y, m int) (pre_year int, pre_month int) { //上一个月
 	} else {
 		pre_year = y
 	}
+	return
+}
+
+//当月时间段,月初-月末时间戳
+func MonthStartEndOfTimeStamp(y, m int) (month_start, month_end int64) {
+	_, y = LimitYear(y)
+	_, m = LimitMonth(m)
+	m_days := GetMonthDayNum(y, m)
+	m_start := strconv.Itoa(y) + "-" + strconv.Itoa(m) + "-" + "01"
+	m_end := strconv.Itoa(y) + "-" + strconv.Itoa(m) + "-" + strconv.Itoa(m_days) + " " + "23:59:59"
+	//转化为时间戳
+	month_start = StrToTimestamp(m_start)
+	month_end = StrToTimestamp(m_end)
+	//month_start = 1
+	//month_end = 1
+	fmt.Println(m_start, m_end)
 	return
 }

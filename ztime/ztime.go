@@ -241,3 +241,9 @@ func Is_Today(ymd string) bool {
 
 	return false
 }
+
+//将日期格式化成时间戳(秒)
+func StrToTimestamp(ymdhis string) int64 {
+	t := Strtotime(ymdhis)
+	return t.Unix()
+}

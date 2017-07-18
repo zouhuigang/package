@@ -12,4 +12,7 @@ func main() {
 	timestamp1 := ztime.Is_Today("2017-7-18")
 	fmt.Printf("%v %v\n", timestamp1, ztime.Is_Today("2019-7-18"))
 
+	s1, e1 := ztime.MonthStartEndOfTimeStamp(2017, 8)
+	fmt.Printf("%v %v\n", s1, e1)
+
 }
