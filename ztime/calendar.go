@@ -5,6 +5,7 @@ package ztime
 
 import (
 	"strconv"
+	"time"
 )
 
 //展示日历,返回年月及当月信息情况
@@ -104,4 +105,50 @@ func GetMonthDayNum(year, month int) int {
 
 	return numberOfDays
 
+}
+
+//windows 1900年-2099年,限制年份范围,如果不满足，则设置为当前年月
+func LimitYear(y int) (bool, int) {
+	if y >= 1900 && y <= 2099 {
+		return true, y
+	}
+	return false, int(time.Now().Year())
+}
+
+//限制月份1-12
+func LimitMonth(m int) (bool, int) {
+	if m >= 1 && m <= 12 {
+		return true, m
+	}
+	return false, int(time.Now().Month())
+}
+
+//下一个月
+func NextMonth(y, m int) (next_year int, next_month int) {
+	_, y = LimitYear(y)
+	_, m = LimitYear(m)
+
+	next_month = m + 1
+	if next_month > 12 {
+		next_year = y + 1
+		next_month = 1
+	} else {
+		next_year = y
+	}
+	return
+}
+
+//上一个月
+func PreMonth(y, m int) (pre_year int, pre_month int) { //上一个月
+	_, y = LimitYear(y)
+	_, m = LimitYear(m)
+
+	pre_month = m - 1
+	if pre_month < 1 {
+		pre_year = y - 1
+		pre_month = 12
+	} else {
+		pre_year = y
+	}
+	return
 }
