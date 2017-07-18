@@ -91,3 +91,22 @@
 0代表：空。
 
 [0,0,0,0,0,0,0] 代表: [日,一，二，三，四，五，六]
+
+
+
+### 6.今天的时间，当地时区
+
+	y, m, d, ymd, timestamp := ztime.GetTodayYMD()
+
+输出：
+
+	今天的时间是:2017年7月18 [2017-07-18] 时间戳:[1500307200]
+
+### 7.判断时间是否是当天时间
+
+	timestamp1 := ztime.Is_Today("2017-7-18")
+	fmt.Printf("%v %v\n", timestamp1, ztime.Is_Today("2019-7-18"))
+
+输出：
+
+	true,false

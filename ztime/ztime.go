@@ -213,3 +213,30 @@ func StrToTime(value string) time.Time {
 	}
 	panic(err)
 }
+
+//得到当天的时间,凌晨时间(2017,7,18,"2017-07-18",1500307200)
+func GetTodayYMD() (y int, m int, d int, ymd string, timestamp int64) {
+	// 一般为CST
+	loc, _ := time.LoadLocation("Local") //"Asia/Chongqing"
+
+	y, m, d = int(time.Now().Year()), int(time.Now().Month()), int(time.Now().Day())
+	ymd = time.Now().Format("2006-01-02")
+	//t, _ := time.Parse("2006-01-02", ymd)//转化为utc时间
+	t, _ := time.ParseInLocation("2006-01-02", ymd, loc)
+	timestamp = t.Unix()
+	return
+}
+
+//判断输入的日期是否为当天时间ymd:2017-07-18或2017-7-18
+func Is_Today(ymd string) bool {
+	_, _, _, _, timestamp := GetTodayYMD() //当天凌晨时间戳
+	tm := time.Unix(timestamp, 0)          //int64转time.Time
+
+	timestamp1 := Strtotime(ymd)
+	//fmt.Println(tm, timestamp1)
+	if tm == timestamp1 {
+		return true
+	}
+
+	return false
+}
