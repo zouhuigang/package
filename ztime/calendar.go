@@ -24,6 +24,11 @@ func ShowMonth(year, month int) (int, int, [][]int) {
 	return year, month, monthData
 }
 
+//删除函数
+//func remove(s []string, i int) []string {
+//	return append(s[:i], s[i+1:]...)
+//}
+
 //返回日历的月份和前一个月及后一个月的链接
 func CShowDate(days int, dayofweek int) [][]int {
 	var month_data [][]int
@@ -47,6 +52,20 @@ func CShowDate(days int, dayofweek int) [][]int {
 		firstnums++
 	}
 	month_data = append(month_data, line_data) //最后一行数据
+
+	//排除第一行全是0的值,即第一行没有当前月份的日期
+	var first_del int = 0
+	for _, v := range month_data[0] {
+		if v == 0 {
+			first_del++
+		}
+
+	}
+	if first_del == len(month_data[0]) {
+		index := 0
+		month_data = append(month_data[:index], month_data[index+1:]...)
+	}
+
 	return month_data
 
 }
