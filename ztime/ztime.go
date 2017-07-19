@@ -8,6 +8,17 @@ import (
 	"time"
 )
 
+//设置时区
+/*var countryTz = map[string]string{
+    "Local":   "Local",
+    "Hungary": "Europe/Budapest",
+    "Egypt":   "Africa/Cairo",
+    "China":   "Asia/Shanghai",
+    "America": "America/Los_Angeles",
+}
+*/
+const DefaultTimeZone = "Asia/Shanghai" //"Asia/Chongqing" ,"Asia/Shanghai" "Local"
+
 var days = [...]string{
 	"日",
 	"一",
@@ -139,7 +150,13 @@ func Date(format string, ts ...time.Time) string {
 	if len(ts) > 0 {
 		t = ts[0]
 	}
-	return t.Format(format)
+
+	loc, err := time.LoadLocation(DefaultTimeZone)
+	if err != nil {
+		//panic(err)
+	}
+
+	return t.In(loc).Format(format)
 }
 
 ////value:"2012-11-12 23:32:01" 或 "2012-11-12"
@@ -217,7 +234,7 @@ func StrToTime(value string) time.Time {
 //得到当天的时间,凌晨时间(2017,7,18,"2017-07-18",1500307200)
 func GetTodayYMD() (y int, m int, d int, ymd string, timestamp int64) {
 	// 一般为CST
-	loc, _ := time.LoadLocation("Local") //"Asia/Chongqing"
+	loc, _ := time.LoadLocation(DefaultTimeZone)
 
 	y, m, d = int(time.Now().Year()), int(time.Now().Month()), int(time.Now().Day())
 	ymd = time.Now().Format("2006-01-02")
@@ -246,4 +263,10 @@ func Is_Today(ymd string) bool {
 func StrToTimestamp(ymdhis string) int64 {
 	t := Strtotime(ymdhis)
 	return t.Unix()
+}
+
+//int64转time.Time时间 utc时间
+//var ymdDate string = time.Unix(v, 0).In(DefaultTimeZone).Format("2006-01-02 15:04:05") //int64转string时间
+func Int64ToTime(v int64) time.Time {
+	return time.Unix(v, 0)
 }

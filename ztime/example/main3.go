@@ -15,4 +15,7 @@ func main() {
 	s1, e1 := ztime.MonthStartEndOfTimeStamp(2017, 8)
 	fmt.Printf("%v %v\n", s1, e1)
 
+	s2 := ztime.Int64ToTime(1501603200)
+	fmt.Printf("%v %v\n", s2, ztime.Date("Y-m-d H:i:s", s2))
+
 }
