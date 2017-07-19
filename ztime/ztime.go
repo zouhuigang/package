@@ -112,6 +112,10 @@ func GetWeekdayNum(y, m, d string) int {
 }
 
 // Date 跟 PHP 中 date 类似的使用方式，如果 ts 没传递，则使用当前时间
+func DateInt64(format string, ts int64) string { //int64时间戳格式化 int64->string
+	ts1 := time.Unix(ts, 0)
+	return Date(format, ts1)
+}
 func Date(format string, ts ...time.Time) string {
 	patterns := []string{
 		// 年

@@ -18,4 +18,7 @@ func main() {
 	s2 := ztime.Int64ToTime(1501603200)
 	fmt.Printf("%v %v\n", s2, ztime.Date("Y-m-d H:i:s", s2))
 
+	s3 := ztime.DateInt64("YmdHis", 1501603200)
+	fmt.Printf("%v\n", s3)
+
 }
