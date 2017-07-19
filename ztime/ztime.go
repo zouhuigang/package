@@ -46,12 +46,12 @@ func FormatNum(num string) string {
 }
 
 //数字补0
-func FormatNumInt(b int) string {
+func FormatNumInt(n int) string {
 	var snum string
-	if b < 10 && b > 0 {
-		snum = "0" + strconv.Itoa(b)
+	if n < 10 && n > 0 {
+		snum = "0" + strconv.Itoa(n)
 	} else {
-		snum = b
+		snum = strconv.Itoa(n)
 	}
 
 	return snum
