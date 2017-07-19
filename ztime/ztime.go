@@ -45,6 +45,18 @@ func FormatNum(num string) string {
 	return snum
 }
 
+//数字补0
+func FormatNumInt(b int) string {
+	var snum string
+	if b < 10 && b > 0 {
+		snum = "0" + strconv.Itoa(b)
+	} else {
+		snum = num
+	}
+
+	return snum
+}
+
 //日期补0,"2012-11-12 23:32:1" 或 "2012-6-12"变成2012-11-12 23:32:01 和2012-06-12
 func FormatDateTime(value string) string {
 	value = strings.Replace(value, " ", ",", -1) //将空格变成,
