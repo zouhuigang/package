@@ -51,7 +51,7 @@ func FormatNumInt(b int) string {
 	if b < 10 && b > 0 {
 		snum = "0" + strconv.Itoa(b)
 	} else {
-		snum = num
+		snum = b
 	}
 
 	return snum
