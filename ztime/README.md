@@ -141,7 +141,7 @@
 
 ### 10.int64->string或int64转time.Time
 
-	s2 := ztime.Int64ToTime(1501603200)//UTC时间
+	s2 := ztime.Int64ToTime(1501603200)//中国时间，东八区时间
 	fmt.Printf("%v %v\n", s2, ztime.Date("Y-m-d H:i:s", s2)) 
 
 	s3 := ztime.DateInt64("Y-m-d H:i:s", 1501603200)//中国时间，东八区时间

@@ -184,7 +184,11 @@ func Strtotime(value string) time.Time { //给当前日期加上后面的+0800 C
 	//格式化日期,将2017-1-1和2017-01-01都统一变成2017-01-01
 	value = FormatDateTime(value)
 
-	zoneName, offset := time.Now().Zone()
+	loc, err := time.LoadLocation(DefaultTimeZone)
+	if err != nil {
+	}
+
+	zoneName, offset := time.Now().In(loc).Zone()
 	zoneValue := offset / 3600 * 100
 	if zoneValue > 0 {
 		value += fmt.Sprintf(" +%04d", zoneValue)
@@ -251,7 +255,6 @@ func StrToTime(value string) time.Time {
 func GetTodayYMD() (y int, m int, d int, ymd string, timestamp int64) {
 	// 一般为CST
 	loc, _ := time.LoadLocation(DefaultTimeZone)
-
 	y, m, d = int(time.Now().Year()), int(time.Now().Month()), int(time.Now().Day())
 	ymd = time.Now().Format("2006-01-02")
 	//t, _ := time.Parse("2006-01-02", ymd)//转化为utc时间
@@ -263,10 +266,10 @@ func GetTodayYMD() (y int, m int, d int, ymd string, timestamp int64) {
 //判断输入的日期是否为当天时间ymd:2017-07-18或2017-7-18,不能输入2017-7-0
 func Is_Today(ymd string) bool {
 	_, _, _, _, timestamp := GetTodayYMD() //当天凌晨时间戳
-	tm := time.Unix(timestamp, 0)          //int64转time.Time
-
+	tm := Int64ToTime(timestamp)           //int64转time.Time
+	//fmt.Println("time===", tm, timestamp)
 	timestamp1 := Strtotime(ymd)
-
+	fmt.Printf("%v,%v\n", tm, timestamp1)
 	if tm.Equal(timestamp1) { //time.Time的比较不能用==来比较,在docker镜像里面会出错
 		//fmt.Printf("%v,%v\n", tm, timestamp1)
 		return true
@@ -281,8 +284,12 @@ func StrToTimestamp(ymdhis string) int64 {
 	return t.Unix()
 }
 
-//int64转time.Time时间 utc时间
+//int64转time.Time时间
 //var ymdDate string = time.Unix(v, 0).In(DefaultTimeZone).Format("2006-01-02 15:04:05") //int64转string时间
 func Int64ToTime(v int64) time.Time {
-	return time.Unix(v, 0)
+	loc, err := time.LoadLocation(DefaultTimeZone)
+	if err != nil {
+		//panic(err)
+	}
+	return time.Unix(v, 0).In(loc)
 }
