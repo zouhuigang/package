@@ -269,7 +269,7 @@ func Is_Today(ymd string) bool {
 	tm := Int64ToTime(timestamp)           //int64转time.Time
 	//fmt.Println("time===", tm, timestamp)
 	timestamp1 := Strtotime(ymd)
-	fmt.Printf("%v,%v\n", tm, timestamp1)
+	//fmt.Printf("%v,%v\n", tm, timestamp1)
 	if tm.Equal(timestamp1) { //time.Time的比较不能用==来比较,在docker镜像里面会出错
 		//fmt.Printf("%v,%v\n", tm, timestamp1)
 		return true
