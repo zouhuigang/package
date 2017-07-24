@@ -298,7 +298,8 @@ func Int64ToTime(v int64) time.Time {
 func NowTimeStamp() int64 {
 	// 一般为CST  t := time.Now().Unix()
 	loc, _ := time.LoadLocation(DefaultTimeZone)
-	nowtime := time.Now().Format("2006-01-02 15:04:05 PM")
+	nowtime := time.Now().In(loc).Format("2006-01-02 15:04:05 PM")
+	//t, _ := time.Parse("2006-01-02 15:04:05 PM", nowtime)
 	t, _ := time.ParseInLocation("2006-01-02 15:04:05 PM", nowtime, loc)
 	return t.Unix()
 }
