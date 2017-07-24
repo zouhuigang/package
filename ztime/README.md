@@ -148,3 +148,8 @@
 	fmt.Printf("%v\n", s3)
 
 
+### 11.得到当前时间戳（东八区）
+
+	timestamp := ztime.NowTimeStamp()
+
+

@@ -293,3 +293,12 @@ func Int64ToTime(v int64) time.Time {
 	}
 	return time.Unix(v, 0).In(loc)
 }
+
+//得到当前时间戳
+func NowTimeStamp() int64 {
+	// 一般为CST  t := time.Now().Unix()
+	loc, _ := time.LoadLocation(DefaultTimeZone)
+	nowtime := time.Now().Format("2006-01-02 15:04:05 PM")
+	t, _ := time.ParseInLocation("2006-01-02 15:04:05 PM", nowtime, loc)
+	return t.Unix()
+}
