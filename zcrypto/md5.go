@@ -14,6 +14,12 @@ func Md5(text string) string {
 	return hex.EncodeToString(hasher.Sum(nil))
 }
 
+//32位大写
+func Md5UP(text string) string {
+	st := Md5(text)
+	return strings.ToUpper(st)
+}
+
 //16位md5,MD5形成后是一个32个字符的字符串，去掉前8个，去掉后8个，即32-8-8=16。这就是16位的MD5。
 func Md5To16(text string) string {
 	m32 := Md5(text)
@@ -24,6 +30,12 @@ func Md5To16(text string) string {
 
 	return string(rs[8:24])
 
+}
+
+//16位大写
+func Md5To16UP(text string) string {
+	st := Md5To16(text)
+	return strings.ToUpper(st)
 }
 
 func Md5HexString(md5 [16]byte) (s string) {
