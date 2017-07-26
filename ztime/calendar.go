@@ -124,6 +124,15 @@ func LimitMonth(m int) (bool, int) {
 	return false, int(time.Now().Month())
 }
 
+//限制天
+func LimitDay(y, m, d int) (bool, int) {
+	mday := GetMonthDayNum(y, m) //当月有多少天
+	if d >= 1 && m <= mday {
+		return true, d
+	}
+	return false, int(time.Now().Day())
+}
+
 //下一个月
 func NextMonth(y, m int) (next_year int, next_month int) {
 	_, y = LimitYear(y)
@@ -167,5 +176,123 @@ func MonthStartEndOfTimeStamp(y, m int) (month_start, month_end int64) {
 	//month_start = 1
 	//month_end = 1
 	fmt.Println(m_start, m_end)
+	return
+}
+
+func NextDay(y, m, d int) (next_year int, next_month int, next_day int) { //下一天
+	_, y = LimitYear(y)
+	_, m = LimitMonth(m)
+	_, d = LimitDay(y, m, d)
+
+	mday := GetMonthDayNum(y, m) //当月有多少天
+	next_day = d + 1
+	if next_day > mday { //进入下一个月
+		next_year, next_month = NextMonth(y, m)
+		next_day = 1
+	} else {
+		next_year = y
+		next_month = m
+	}
+	return
+}
+
+func PreDay(y, m, d int) (pre_year int, pre_month int, pre_day int) { //上一天
+	_, y = LimitYear(y)
+	_, m = LimitMonth(m)
+	_, d = LimitDay(y, m, d)
+
+	pre_day = d - 1
+	if pre_day <= 0 { //进入上一个月
+		pre_year, pre_month = PreMonth(y, m)
+		pre_day = GetMonthDayNum(pre_year, pre_month) //下一个月有多少天
+	} else {
+		pre_year = y
+		pre_month = m
+	}
+	return
+}
+
+//当前时间周,上一周，下一周等,返回当前周的日期，以及当天的星期
+func SWeek(y, m, d int) ([7]string, int) { //[一----六日]
+	var dayofweek int = GetWeekdayNum(strconv.Itoa(y), strconv.Itoa(m), strconv.Itoa(d)) //得到给定日期是星期几
+	if dayofweek == 0 {                                                                  //1，2，3，4，5，6，7代表星期一，星期二....星期日
+		dayofweek = 7
+	}
+	var weekDay [7]string //存储星期数据[一----六日]
+	weekDay[dayofweek-1] = strconv.Itoa(y) + "-" + FormatNumInt(m) + "-" + FormatNumInt(d)
+
+	var ny, nm, nd int = y, m, d
+	for i := dayofweek + 1; i <= 7; i++ {
+		ny, nm, nd = NextDay(ny, nm, nd)
+		weekDay[i-1] = strconv.Itoa(ny) + "-" + FormatNumInt(nm) + "-" + FormatNumInt(nd)
+	}
+
+	var py, pm, pd int = y, m, d
+	var j int
+	for j = dayofweek - 1; j > 0; j-- {
+		py, pm, pd = PreDay(py, pm, pd)
+		weekDay[j-1] = strconv.Itoa(py) + "-" + FormatNumInt(pm) + "-" + FormatNumInt(pd)
+	}
+
+	return weekDay, dayofweek
+}
+func SWeekSun(y, m, d int) ([7]string, int) { //[日一----六]
+	var dayofweek int = GetWeekdayNum(strconv.Itoa(y), strconv.Itoa(m), strconv.Itoa(d)) //得到给定日期是星期几
+	var weekDay [7]string                                                                //存储星期数据[日一----六]
+	weekDay[dayofweek] = strconv.Itoa(y) + "-" + FormatNumInt(m) + "-" + FormatNumInt(d)
+
+	var ny, nm, nd int = y, m, d
+	for i := dayofweek + 1; i < 7; i++ {
+		ny, nm, nd = NextDay(ny, nm, nd)
+		weekDay[i] = strconv.Itoa(ny) + "-" + FormatNumInt(nm) + "-" + FormatNumInt(nd)
+	}
+
+	var py, pm, pd int = y, m, d
+	var j int
+	for j = dayofweek - 1; j >= 0; j-- {
+		py, pm, pd = PreDay(py, pm, pd)
+		weekDay[j] = strconv.Itoa(py) + "-" + FormatNumInt(pm) + "-" + FormatNumInt(pd)
+	}
+
+	return weekDay, dayofweek
+}
+
+//分割年月日,如将2017-01-02分割成int
+func SliptDate(date string) (int, int, int) {
+	s1 := Explode("-", date)
+	if len(s1) < 3 {
+		return 0, 0, 0
+	}
+	y, _ := strconv.Atoi(s1[0])
+	m, _ := strconv.Atoi(s1[1])
+	d, _ := strconv.Atoi(s1[2])
+	return y, m, d
+}
+
+//上一周周一
+func PreWeekMon(y, m, d int) (y1, m1, d1 int) {
+	_, y = LimitYear(y)
+	_, m = LimitMonth(m)
+	_, d = LimitDay(y, m, d)
+
+	nowweek, _ := SWeek(y, m, d)       //得到给定日期的星期信息
+	y1, m1, d1 = SliptDate(nowweek[0]) //星期一
+	for i := 0; i < 7; i++ {
+		y1, m1, d1 = PreDay(y1, m1, d1)
+	}
+	return
+}
+
+//下一周周一信息
+func NextWeekMon(y, m, d int) (y1, m1, d1 int) {
+	_, y = LimitYear(y)
+	_, m = LimitMonth(m)
+	_, d = LimitDay(y, m, d)
+
+	nowweek, _ := SWeek(y, m, d)       //得到给定日期的星期信息
+	y1, m1, d1 = SliptDate(nowweek[0]) //星期一
+	for i := 0; i < 7; i++ {
+		y1, m1, d1 = NextDay(y1, m1, d1)
+	}
 	return
 }
