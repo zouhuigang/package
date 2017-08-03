@@ -155,7 +155,7 @@ func Menuhtml(bean interface{}, table *string, cid int64, level int) {
 				*table += `<a title="编辑" href=edit?id=` + id + `" class="editBtns">&nbsp;</a>`
 			} else {
 				*table += `<a title="编辑" href="edit?id=` + id + `" class="editBtns">&nbsp;</a>
-				 <a onClick="return confirm(' . "'您确认要删除该信息吗?'" . ');" href="index?job=del&id[]=` + id + `" class="deleteBtns" title="删除">&nbsp;</a>`
+				 <a onClick="return confirm('您确认要删除该信息吗?');" href="index?job=del&id[]=` + id + `" class="deleteBtns" title="删除">&nbsp;</a>`
 
 			}
 			*table += `</td></tr>`
