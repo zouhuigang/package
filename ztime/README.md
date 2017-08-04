@@ -171,3 +171,31 @@
 	fmt.Printf("[%v-%v-%v],[%v-%v-%v]\n", y1, m1, d1, y2, m2, d2)
 
 输出：[2017-7-24],[2017-8-7]
+
+
+### 14.得到一周具体的信息
+
+
+	package main
+
+	import (
+		"fmt"
+		"github.com/zouhuigang/package/ztime"
+	)
+	
+	func main() {
+		//得到2017-07-26这天所在的周
+		weekInfo, w1 := ztime.SWeek(2017, 7, 26)
+		fmt.Printf("%v,%v\n", weekInfo, w1)
+	
+		getWeekInfo := ztime.GetWeekInfo(weekInfo, "/")
+		fmt.Printf("周详细信息:\n%v\n", getWeekInfo)
+	
+	}
+
+
+输出：
+
+	周详细信息:
+	[{2017-07-24 07/24 日} {2017-07-25 07/25 一} {2017-07-26 07/26 二} {2017-07-27
+	7/27 三} {2017-07-28 07/28 四} {2017-07-29 07/29 五} {2017-07-30 07/30 六}]

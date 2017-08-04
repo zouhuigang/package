@@ -303,3 +303,23 @@ func NowTimeStamp() int64 {
 	t, _ := time.ParseInLocation("2006-01-02 15:04:05 PM", nowtime, loc)
 	return t.Unix()
 }
+
+type wList struct {
+	NowDate  string //2017-01-30
+	MonthDay string //01/30
+	Whatday  string //星期几
+}
+
+//将一周的日历拆分成一周的详情,sp为`/`或`.`
+func GetWeekInfo(weekInfo [7]string, sp string) []wList {
+
+	var week []wList
+	week = make([]wList, 0)
+	for k, v := range weekInfo {
+		_, m1, d1 := SliptDate(v)
+		md := fmt.Sprintf("%s%s%s", FormatNumInt(m1), sp, FormatNumInt(d1))
+		w := wList{v, md, days[k]}
+		week = append(week, w)
+	}
+	return week
+}
