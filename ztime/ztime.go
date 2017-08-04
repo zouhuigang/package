@@ -28,6 +28,15 @@ var days = [...]string{
 	"五",
 	"六",
 }
+var daysMon = [...]string{
+	"一",
+	"二",
+	"三",
+	"四",
+	"五",
+	"六",
+	"日",
+}
 
 //数字补0
 func FormatNum(num string) string {
@@ -318,7 +327,7 @@ func GetWeekInfo(weekInfo [7]string, sp string) []wList {
 	for k, v := range weekInfo {
 		_, m1, d1 := SliptDate(v)
 		md := fmt.Sprintf("%s%s%s", FormatNumInt(m1), sp, FormatNumInt(d1))
-		w := wList{v, md, days[k]}
+		w := wList{v, md, daysMon[k]}
 		week = append(week, w)
 	}
 	return week
