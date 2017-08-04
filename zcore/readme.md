@@ -71,3 +71,48 @@
 前端：
 
 	{{noescape .option}}
+
+
+### 3.分页管理，配合model
+
+	package edu
+
+	import (
+		. "app/db"
+		"fmt"
+		"github.com/zouhuigang/package/zcore"
+		"math"
+	)
+	
+	//教师列表
+	//table string, w_str string, filed string, w_order string, p int64, links string, pageSize int64, keys string, nums int64, beans interface{}
+	func GetTeacherListPage(p int64, pageSize int64) (list []*Edu_teacher, str_page string, err error) {
+		list = make([]*Edu_teacher, 0)
+	
+		var links string = "/paike/index?"
+	
+		nums, err := MasterDB.Where("1=1").Count(new(Edu_teacher))
+		if err != nil {
+			fmt.Println("servicesModel FindByTag tag not count error:\n", err)
+		}
+	
+		//var nums int64 = 400
+		page := int64(math.Ceil(float64(nums / pageSize)))
+		if p > page {
+			p = page
+		}
+	
+		beginNo := (p - 1) * pageSize
+		if beginNo < 0 {
+			beginNo = 0
+		}
+	
+		//Limit(LIMIT, OFFSET):从id大于OFFSET开始取出LIMIT条数据.Limit(int(pageSize), int(beginNo))
+		err = MasterDB.Select("id,realname,mobile,idcard,subject,regtime").Where("1=1").Limit(int(pageSize), int(beginNo)).Find(&list) //注意加&
+	
+		str_page = zcore.MultLink(p, nums, links, pageSize)
+	
+		return
+	}
+
+
