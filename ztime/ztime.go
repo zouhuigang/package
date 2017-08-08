@@ -45,7 +45,7 @@ func FormatNum(num string) string {
 		return err.Error()
 	}
 	var snum string
-	if b < 10 && b > 0 {
+	if b < 10 && b >= 0 {
 		snum = "0" + strconv.Itoa(b)
 	} else {
 		snum = num
@@ -57,7 +57,7 @@ func FormatNum(num string) string {
 //数字补0
 func FormatNumInt(n int) string {
 	var snum string
-	if n < 10 && n > 0 {
+	if n < 10 && n >= 0 {
 		snum = "0" + strconv.Itoa(n)
 	} else {
 		snum = strconv.Itoa(n)
@@ -312,6 +312,14 @@ func NowTimeStamp() int64 {
 	t, _ := time.ParseInLocation("2006-01-02 15:04:05 PM", nowtime, loc)
 	return t.Unix()
 }
+
+//得到指定日期的时间戳
+//http://www.01happy.com/golang-time/
+/*func GetTimeStamp(ymdhis string) int64 {
+	loc, _ := time.LoadLocation(DefaultTimeZone)
+	t, _ := time.ParseInLocation("2006-01-02 15:04:05 PM", ymdhis, loc)
+	return t.Unix()
+}*/
 
 type wList struct {
 	NowDate  string //2017-01-30
