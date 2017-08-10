@@ -1,4 +1,4 @@
-### 服务端的一些基础功能，比如页面跳转等
+### 服务端的一些基础功能，比如页面跳转及string转int,int64等转换功能
 	
 ### 使用前：
 
@@ -114,5 +114,25 @@
 	
 		return
 	}
+
+
+### string转int,int64等，可设置默认值
+
+	package main
+
+	import (
+		"fmt"
+		"github.com/zouhuigang/package/zcore"
+	)
+	
+	func main() {
+		int1 := zcore.StringToInt("1000", 9)
+		int2 := zcore.StringToInt("", 2)
+		fmt.Println(int1, int2)
+	}
+
+输出：
+
+	1000和2
 
 

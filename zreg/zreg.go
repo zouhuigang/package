@@ -136,3 +136,11 @@ func Is_radio(slice []int, selects int) bool {
 	}
 	return false
 }
+
+//判断是正整数positive
+func IsPosInt(n int) bool {
+	if n <= 0 {
+		return false
+	}
+	return true
+}
