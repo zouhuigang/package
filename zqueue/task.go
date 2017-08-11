@@ -9,10 +9,12 @@ import (
 	"sync"
 )
 
-var wg sync.WaitGroup //创建一个sync.WaitGroup
-var ch chan int
+var (
+	wg sync.WaitGroup //创建一个sync.WaitGroup
+	ch chan int       //任务处理
+)
 
-func NewTask(TCount int) {
+func NewTask(TCount int, Scount int, HandleFunc interface{}, args ...interface{}) {
 	ch = make(chan int)
 	//产生任务
 	go func() {
@@ -21,16 +23,14 @@ func NewTask(TCount int) {
 		}
 		close(ch)
 	}()
-}
 
-//派遣多少个小兵去执行任务
-func Soldiers(Scount int, HandleFunc interface{}, args ...interface{}) {
+	//派遣多少个小兵去执行任务
 	for i := 0; i < Scount; i++ {
 		wg.Add(1) //每创建一个goroutine，就把任务队列中任务的数量+1
 		go executeTask(i, HandleFunc, args)
 	}
 	wg.Wait() //.Wait()这里会发生阻塞，直到队列中所有的任务结束就会解除阻塞
-	log.Println("success,报告大王,全部任务执行完毕。")
+	log.Println("SUCCESS!!全部任务执行完毕。")
 }
 
 //我的小兵去执行任务
@@ -56,5 +56,4 @@ func executeTask(i int, HandleFunc interface{}, args ...interface{}) {
 		}()
 	}
 
-	//fmt.Println(i)
 }

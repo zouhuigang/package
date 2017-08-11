@@ -6,11 +6,9 @@ import (
 )
 
 func main() {
-	taskcount := 10000000000 //任务数
-	solidcount := 5          //多少个士兵去执行
-	zqueue.NewTask(taskcount)
-	zqueue.Soldiers(solidcount, callbackFunction, "a", "b") //参数可省略
-
+	taskcount := 10000                                                //任务数
+	solidcount := 5                                                   //多少个士兵去执行
+	zqueue.NewTask(taskcount, solidcount, callbackFunction, "a", "b") //参数可省略
 }
 
 //回调的函数,args回调的参数
