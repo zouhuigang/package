@@ -322,9 +322,10 @@ func NowTimeStamp() int64 {
 }*/
 
 type wList struct {
-	NowDate  string //2017-01-30
+	NowDate  string //日期2017-01-30
 	MonthDay string //01/30
 	Whatday  string //星期几
+	IsToday  bool   //当前日期是否是今天
 }
 
 //将一周的日历拆分成一周的详情,sp为`/`或`.`
@@ -333,9 +334,11 @@ func GetWeekInfo(weekInfo [7]string, sp string) []wList {
 	var week []wList
 	week = make([]wList, 0)
 	for k, v := range weekInfo {
-		_, m1, d1 := SliptDate(v)
+		y1, m1, d1 := SliptDate(v)
 		md := fmt.Sprintf("%s%s%s", FormatNumInt(m1), sp, FormatNumInt(d1))
-		w := wList{v, md, daysMon[k]}
+		todate := fmt.Sprintf("%s-%s-%s", FormatNumInt(y1), FormatNumInt(m1), FormatNumInt(d1))
+		isToday := Is_Today(todate) //2017-7-18
+		w := wList{v, md, daysMon[k], isToday}
 		week = append(week, w)
 	}
 	return week

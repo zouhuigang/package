@@ -6,8 +6,8 @@ import (
 )
 
 func main() {
-	//得到2017-07-26这天所在的周
-	weekInfo, w1 := ztime.SWeek(2017, 7, 26)
+	//得到2017-9-1这天所在的周
+	weekInfo, w1 := ztime.SWeek(2017, 9, 1)
 	fmt.Printf("%v,%v\n", weekInfo, w1)
 
 	getWeekInfo := ztime.GetWeekInfo(weekInfo, ".")
