@@ -9,6 +9,6 @@ import (
 func PhpSha1(txt string) string {
 	h := sha1.New()
 	io.WriteString(h, txt)
-	sha1 := fmt.Sprintf("%x\n", h.Sum(nil))
+	sha1 := fmt.Sprintf("%x", h.Sum(nil))
 	return sha1
 }
