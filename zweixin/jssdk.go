@@ -2,15 +2,26 @@
 package zweixin
 
 import (
-	//"crypto/sha1"
 	"bytes"
-	"crypto/md5"
-	"encoding/hex"
+	"github.com/zouhuigang/package/zcrypto"
 	"math/rand"
 	"sort"
 	"strings"
 	"time"
 )
+
+//初始化数据，连接db
+type ticket_callback struct {
+	Errcode    int64  `json:"errcode"`
+	Errmsg     string `json:"errmsg"`
+	Ticket     string `json:"ticket"`
+	Expires_in int    `json:"expires_in"`
+}
+
+type access_token struct {
+	Access_token string `json:"access_token"`
+	Expires_in   int    `json:"expires_in"`
+}
 
 //NonceStr:   必须, 32个字符以内, 商户生成的随机字符串
 //随机32位字符串
@@ -51,42 +62,17 @@ func createLinkString(keys []string, args map[string]string) string {
 	return buf.String()
 }
 
-//签名
+//签名,微信调试签名https://mp.weixin.qq.com/debug/cgi-bin/sandbox?t=jsapisign
+//微信的签名函数sha1(string1)是php版的,可能会跟其他语言不一样
 func Signature(args map[string]string) {
 	keys := paraFilter(args)
 	signStr := createLinkString(keys, args)
-	sign := md5.Sum([]byte(signStr))
-	args["sign"] = strings.ToUpper(hex.EncodeToString(sign[:]))
+	sign := zcrypto.PhpSha1(signStr)
+	args["sign"] = sign
 }
 
-/*
-// 微信公众号 明文模式/URL认证 签名
-func Sign(token, timestamp, nonce string) (signature string) {
-	strs := sort.StringSlice{token, timestamp, nonce}
-	strs.Sort()
-
-	buf := make([]byte, 0, len(token)+len(timestamp)+len(nonce))
-
-	buf = append(buf, strs[0]...)
-	buf = append(buf, strs[1]...)
-	buf = append(buf, strs[2]...)
-
-	hashsum := sha1.Sum(buf)
-	return hex.EncodeToString(hashsum[:])
+func checkErr(err error) {
+	if err != nil {
+		panic(err)
+	}
 }
-
-// 微信公众号/企业号 密文模式消息签名
-func MsgSign(token, timestamp, nonce, encryptedMsg string) (signature string) {
-	strs := sort.StringSlice{token, timestamp, nonce, encryptedMsg}
-	strs.Sort()
-
-	buf := make([]byte, 0, len(token)+len(timestamp)+len(nonce)+len(encryptedMsg))
-
-	buf = append(buf, strs[0]...)
-	buf = append(buf, strs[1]...)
-	buf = append(buf, strs[2]...)
-	buf = append(buf, strs[3]...)
-
-	hashsum := sha1.Sum(buf)
-	return hex.EncodeToString(hashsum[:])
-}*/
