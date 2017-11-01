@@ -104,6 +104,79 @@ http://www.philo.top/2015/03/18/golang-js-des/
 
 
 
+### Sign包
+
+>验证请求传过来的参数是否被更改过
+
+1.微信签名
+
+	package main
+
+	import (
+		"fmt"
+		"github.com/zouhuigang/package/zcrypto"
+	)
+	
+	func main() {
+		str := `jsapi_ticket=kgt8ON7yVITDhtdwci0qedb8EuKl7VzW2NoBNJA819yQXNy4bd6IlLzxolhEatYfgOdvteSiqGXQlbmgsCusDQ&noncestr=spybo2yt3ohu4jr8yaw6ik6vl3k6vhpg&timestamp=1505096462&url=https://www.anooc.com/edu/teacher/scan`
+	
+		s1 := zcrypto.Sign(str)
+		s2 := zcrypto.SignPhpSha1(str)
+		fmt.Printf("%s\n%s\n", s1, s2)
+	}
+
+
+输出：
+
+	
+	fcedccd3459120b97bfbadd261d61300
+	6d61cdd2d481ecb8a8b04e842aac91f613091043
+
+
+2.易联云签名
+
+
+	package main
+
+	import (
+		"fmt"
+		"github.com/zouhuigang/package/zcrypto"
+	)
+	
+	func main() {
+		client_id := `1096828699`
+		client_secret := `1f66e825d98bc916afc084c59fe3c883`
+		var push_time int64 = 1509523926
+		str := fmt.Sprintf("%s%d%s", client_id, push_time, client_secret)
+		s1 := zcrypto.Sign(str)
+		s2 := zcrypto.SignPhpSha1(str)
+		fmt.Printf("%s\n%s\n", s1, s2)
+	}
+
+
+
+输出：
+
+	
+	a174d91e441617db9d4a1c41c59af088
+	b631528ba6f7bc0e973c0631491baf87144290b4
+
+
+
+签名验证规则：
+
+    应用将接收到易联云推送的POST Body
+    得到的POST Body里面的sign
+    对上一步得到的sign与md5(client_id+push_time+client_secret)校验是否正确
+    通过上一步验证,请返回以下示例(格式json),否则将视为推送失败,会再次推送两次,如果均未有返回将放弃推送
+
+	{"data": "OK"}
+
+	字 段	含 义	实 例	备 注
+	data	接收成功	OK	接收成功
+
+
+总结下来，push_time很重要，所以尽量推送的时候，都带一个时间戳回来。然后是用户id或应用id,这个可以后台得到。
 
 
 

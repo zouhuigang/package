@@ -74,34 +74,40 @@ func httpPost(data string, url string) (response string) {
 	resp, err := http.Post(url, "application/x-www-form-urlencoded", strings.NewReader(data))
 	if err != nil {
 		fmt.Errorf("网络错误: %s", err)
+		return "网络错误"
 	}
 	defer resp.Body.Close()
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		fmt.Errorf("数据解析错误：%s", err)
+		return "数据解析错误"
 	}
 	stats := string(body)
 	return stats
 }
 
-func (self *OurApplication) GetToken() {
+func (self *OurApplication) GetToken() string {
 	uid := uuid.NewV4()
 	timestamp := time.Now().Unix()
 	url := "https://open-api.10ss.net/oauth/oauth"
 	fmtStr := fmt.Sprintf("client_id=%s&grant_type=client_credentials&scope=all&sign=%s&timestamp=%d&id=%s", self.Client_id, self.Sign(timestamp), timestamp, uid)
 	resp := httpPost(fmtStr, url)
-	js, err := NewJson([]byte(resp))
+	return resp
+	/*js, err := NewJson([]byte(resp))
 	if err != nil {
-		fmt.Println(err.Error)
+		//fmt.Println(err.Error)
+		return js, err
 	}
 
-	status := js.Get("error").MustString()
-	if status != "0" {
-		fmt.Println("error : ", resp)
-	}
+	return js, nil*/
 
-	fmt.Println("Access_token : ", js.Get("body").Get("Access_token").MustString())
-	fmt.Println("refresh_token : ", js.Get("body").Get("refresh_token").MustString())
+	//status := js.Get("error").MustString()
+	//if status != "0" {
+	//	fmt.Println("error : ", resp)
+	//	}
+
+	//fmt.Println("Access_token : ", js.Get("body").Get("Access_token").MustString())
+	//fmt.Println("refresh_token : ", js.Get("body").Get("refresh_token").MustString())
 }
 
 func (self *OpenApplication) GetToken() {
@@ -143,7 +149,7 @@ func (self OperationInterface) CheckResponseStatus(resp string) (stats bool) {
 //应用管理平台
 //https://dev.10ss.net/admin/listinfo?id=1096322761
 //接口文档-http://doc2.10ss.net/372519
-func (self OperationInterface) Print(machine_code string, content string) {
+func (self OperationInterface) Print(machine_code string, content string) string {
 	url := "https://open-api.10ss.net/print/index"
 	uid := uuid.NewV4()
 	timestamp := ztime.NowTimeStamp()
@@ -155,12 +161,13 @@ func (self OperationInterface) Print(machine_code string, content string) {
 	fmt.Println(fmtStr)
 
 	resp := httpPost(fmtStr, url)
+	return resp
 
-	if self.CheckResponseStatus(resp) {
+	/*if self.CheckResponseStatus(resp) {
 		fmt.Println(resp)
 	} else {
 		fmt.Println(resp)
-	}
+	}*/
 }
 
 func (self OperationInterface) DelPrint(machine_code string) {
