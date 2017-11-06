@@ -180,3 +180,17 @@ http://www.philo.top/2015/03/18/golang-js-des/
 
 
 
+### 摩斯编码解密
+
+![./images/morse.jpg](./images/morse.jpg)
+
+.-代表的意思为:
+
+	.代表0
+	-代表1
+
+
+中文的摩斯编码可采用，中文转二进制，然后0101就代表.-.-
+
+
+
