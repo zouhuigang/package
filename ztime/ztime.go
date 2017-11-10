@@ -264,10 +264,10 @@ func StrToTime(value string) time.Time {
 func GetTodayYMD() (y int, m int, d int, ymd string, timestamp int64) {
 	// 一般为CST
 	loc, _ := time.LoadLocation(DefaultTimeZone)
-	y, m, d = int(time.Now().Year()), int(time.Now().Month()), int(time.Now().Day())
-	ymd = time.Now().Format("2006-01-02")
-	//t, _ := time.Parse("2006-01-02", ymd)//转化为utc时间
-	t, _ := time.ParseInLocation("2006-01-02", ymd, loc)
+	y, m, d = int(time.Now().In(loc).Year()), int(time.Now().In(loc).Month()), int(time.Now().In(loc).Day())
+	ymd = time.Now().In(loc).Format("2006-01-02")
+	//t, _ := time.Parse("2006-01-02", ymd) //转化为utc时间,得到的是8点的时间
+	t, _ := time.ParseInLocation("2006-01-02", ymd, loc) //得到零点的时间
 	timestamp = t.Unix()
 	return
 }
