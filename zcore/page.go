@@ -29,7 +29,7 @@ func MultLink(currentPage int64, totalRecords int64, url string, pageSize int64)
 	}
 
 	var mult string
-	totalPages := math.Ceil(float64(totalRecords / pageSize))
+	totalPages := math.Ceil(float64(totalRecords) / float64(pageSize))
 
 	mult += `<div class="pages">`
 	if currentPage < 1 {
