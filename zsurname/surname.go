@@ -12,29 +12,29 @@ const (
 	configFile = "config.txt"
 )
 
-type configDat struct {
+type ConfigDat struct {
 	//data []byte
 	data map[string]byte
 }
 
-var sur *configDat = nil
+var sur *ConfigDat = nil
 
-func New() (configDat, error) {
-	if sur == nil {
-		var err error
-		sur, err = loadConfigDat()
-		if err != nil {
-			log.Fatal("the config file loaded failed!")
-			return *sur, err
-		}
+func New() (ConfigDat, error) {
+	//if sur == nil {
+	var err error
+	sur, err = loadConfigDat()
+	if err != nil {
+		log.Fatal("the config file loaded failed!")
+		return *sur, err
 	}
+	//}
 	return *sur, nil
 }
 
 //加载配置
-func loadConfigDat() (*configDat, error) {
+func loadConfigDat() (*ConfigDat, error) {
 
-	p := configDat{}
+	p := ConfigDat{}
 	data, err := ioutil.ReadFile(configFile)
 	if err != nil {
 		log.Fatal(err)
@@ -74,7 +74,7 @@ func getSurname(realname string, n int) string {
 }
 
 //查找姓名,至多查找2个汉字
-func (p configDat) FindSurname(realname string) (bool, string) {
+func (p ConfigDat) FindSurname(realname string) (bool, string) {
 
 	if zreg.IsNull(realname) { //如果为空，则返回false
 		return false, "姓名不能为空"
