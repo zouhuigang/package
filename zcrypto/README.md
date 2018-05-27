@@ -193,4 +193,22 @@ http://www.philo.top/2015/03/18/golang-js-des/
 中文的摩斯编码可采用，中文转unicode之后去掉\u，得到二进制，然后0101就代表.-.-
 
 
+### 增加rsa文件生成
+
+	package main
+
+	import (
+		"github.com/zouhuigang/package/zcrypto"
+		"log"
+	)
+	
+	func main() {
+		// 生成 2048 位密钥对文件 指定名称
+		err := zcrypto.NewRSAFile("id_rsa.pub", "id_rsa", 2048)
+		if err != nil {
+			log.Fatalln(err)
+		}
+	}
+
+
 

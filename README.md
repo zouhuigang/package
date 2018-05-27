@@ -67,6 +67,8 @@ zredis包
 zlog包
 >log日志
 
+zsend包
+>发送邮件/短信/钉钉机器人通知等
 
 
 
