@@ -53,7 +53,7 @@ type OpenApplication struct {
 
 func (self OurApplication) AddPrinter(machine_code string, msign string) {
 	url := "https://open-api.10ss.net/printer/addprinter"
-	uid := uuid.NewV4()
+	uid := uuid.Must(uuid.NewV4())
 	timestamp := time.Now().Unix()
 	fmtStr := fmt.Sprintf("client_id=%s&sign=%s&timestamp=%d&id=%s&access_token=%s&machine_code=%s&msign=%s", self.Client_id, self.Sign(timestamp), timestamp, uid, self.Access_token, machine_code, msign)
 	resp := httpPost(fmtStr, url)
@@ -87,7 +87,7 @@ func httpPost(data string, url string) (response string) {
 }
 
 func (self *OurApplication) GetToken() string {
-	uid := uuid.NewV4()
+	uid := uuid.Must(uuid.NewV4())
 	timestamp := time.Now().Unix()
 	url := "https://open-api.10ss.net/oauth/oauth"
 	fmtStr := fmt.Sprintf("client_id=%s&grant_type=client_credentials&scope=all&sign=%s&timestamp=%d&id=%s", self.Client_id, self.Sign(timestamp), timestamp, uid)
@@ -111,7 +111,7 @@ func (self *OurApplication) GetToken() string {
 }
 
 func (self *OpenApplication) GetToken() {
-	uid := uuid.NewV4()
+	uid := uuid.Must(uuid.NewV4())
 	timestamp := time.Now().Unix()
 	url := "https://open-api.10ss.net/oauth/oauth"
 	fmtStr := fmt.Sprintf("client_id=%s&grant_type=authorization_code&scope=all&sign=%s&timestamp=%d&id=%s&code=%s", self.Client_id, self.Sign(timestamp), timestamp, uid, self.Code)
@@ -151,7 +151,7 @@ func (self OperationInterface) CheckResponseStatus(resp string) (stats bool) {
 //接口文档-http://doc2.10ss.net/372519
 func (self OperationInterface) Print(machine_code string, content string) string {
 	url := "https://open-api.10ss.net/print/index"
-	uid := uuid.NewV4()
+	uid := uuid.Must(uuid.NewV4())
 	timestamp := ztime.NowTimeStamp()
 	origin_id := fmt.Sprintf("%d", uid)
 	origin_id = zcrypto.Md5(origin_id)
@@ -172,7 +172,7 @@ func (self OperationInterface) Print(machine_code string, content string) string
 
 func (self OperationInterface) DelPrint(machine_code string) {
 	url := "https://open-api.10ss.net/printer/deleteprinter"
-	uid := uuid.NewV4()
+	uid := uuid.Must(uuid.NewV4())
 	timestamp := time.Now().Unix()
 	fmtStr := fmt.Sprintf("client_id=%s&sign=%s&timestamp=%d&id=%s&access_token=%s&machine_code=%s", self.Client_id, self.Sign(timestamp), timestamp, uid, self.Access_token, machine_code)
 	resp := httpPost(fmtStr, url)
@@ -185,7 +185,7 @@ func (self OperationInterface) DelPrint(machine_code string) {
 
 func (self OperationInterface) AddPrintMenu(machine_code string, content string) {
 	url := "https://open-api.10ss.net/printmenu/addprintmenu"
-	uid := uuid.NewV4()
+	uid := uuid.Must(uuid.NewV4())
 	timestamp := time.Now().Unix()
 	fmtStr := fmt.Sprintf("client_id=%s&sign=%s&timestamp=%d&id=%s&access_token=%s&machine_code=%s&content=%s", self.Client_id, self.Sign(timestamp), timestamp, uid, self.Access_token, machine_code, content)
 	fmt.Println(fmtStr)
@@ -199,7 +199,7 @@ func (self OperationInterface) AddPrintMenu(machine_code string, content string)
 
 func (self OperationInterface) ShutdownRestart(machine_code string, response_type string) {
 	url := "https://open-api.10ss.net/printer/shutdownrestart"
-	uid := uuid.NewV4()
+	uid := uuid.Must(uuid.NewV4())
 	timestamp := time.Now().Unix()
 	fmtStr := fmt.Sprintf("client_id=%s&sign=%s&timestamp=%d&id=%s&access_token=%s&machine_code=%s&response_type=%s", self.Client_id, self.Sign(timestamp), timestamp, uid, self.Access_token, machine_code, response_type)
 	fmt.Println(fmtStr)
@@ -213,7 +213,7 @@ func (self OperationInterface) ShutdownRestart(machine_code string, response_typ
 
 func (self OperationInterface) SetSound(machine_code string, response_type string, voice string) {
 	url := "https://open-api.10ss.net/printer/setsound"
-	uid := uuid.NewV4()
+	uid := uuid.Must(uuid.NewV4())
 	timestamp := time.Now().Unix()
 	fmtStr := fmt.Sprintf("client_id=%s&sign=%s&timestamp=%d&id=%s&access_token=%s&machine_code=%s&response_type=%s&voice=%s", self.Client_id, self.Sign(timestamp), timestamp, uid, self.Access_token, machine_code, response_type, voice)
 	fmt.Println(fmtStr)
@@ -227,7 +227,7 @@ func (self OperationInterface) SetSound(machine_code string, response_type strin
 
 func (self OperationInterface) PrintInfo(machine_code string) {
 	url := "https://open-api.10ss.net/printer/printinfo"
-	uid := uuid.NewV4()
+	uid := uuid.Must(uuid.NewV4())
 	timestamp := time.Now().Unix()
 	fmtStr := fmt.Sprintf("client_id=%s&sign=%s&timestamp=%d&id=%s&access_token=%s&machine_code=%s", self.Client_id, self.Sign(timestamp), timestamp, uid, self.Access_token, machine_code)
 	fmt.Println(fmtStr)
@@ -241,7 +241,7 @@ func (self OperationInterface) PrintInfo(machine_code string) {
 
 func (self OperationInterface) GetVersion(machine_code string) {
 	url := "https://open-api.10ss.net/printer/getversion"
-	uid := uuid.NewV4()
+	uid := uuid.Must(uuid.NewV4())
 	timestamp := time.Now().Unix()
 	fmtStr := fmt.Sprintf("client_id=%s&sign=%s&timestamp=%d&id=%s&access_token=%s&machine_code=%s", self.Client_id, self.Sign(timestamp), timestamp, uid, self.Access_token, machine_code)
 	fmt.Println(fmtStr)
@@ -255,7 +255,7 @@ func (self OperationInterface) GetVersion(machine_code string) {
 
 func (self OperationInterface) CancelAll(machine_code string) {
 	url := "https://open-api.10ss.net/printer/cancelall"
-	uid := uuid.NewV4()
+	uid := uuid.Must(uuid.NewV4())
 	timestamp := ztime.NowTimeStamp()
 	fmtStr := fmt.Sprintf("client_id=%s&sign=%s&timestamp=%d&id=%s&access_token=%s&machine_code=%s", self.Client_id, self.Sign(timestamp), timestamp, uid, self.Access_token, machine_code)
 	fmt.Println(fmtStr)
@@ -269,7 +269,7 @@ func (self OperationInterface) CancelAll(machine_code string) {
 
 func (self OperationInterface) CancelOne(machine_code string, order_id string) {
 	url := "https://open-api.10ss.net/printer/cancelone"
-	uid := uuid.NewV4()
+	uid := uuid.Must(uuid.NewV4())
 	timestamp := time.Now().Unix()
 	fmtStr := fmt.Sprintf("client_id=%s&sign=%s&timestamp=%d&id=%s&access_token=%s&machine_code=%s&order_id=%s", self.Client_id, self.Sign(timestamp), timestamp, uid, self.Access_token, machine_code, order_id)
 	fmt.Println(fmtStr)
@@ -283,7 +283,7 @@ func (self OperationInterface) CancelOne(machine_code string, order_id string) {
 
 func (self OperationInterface) Seticon(machine_code string, img_url string) {
 	url := "https://open-api.10ss.net/printer/seticon"
-	uid := uuid.NewV4()
+	uid := uuid.Must(uuid.NewV4())
 	timestamp := time.Now().Unix()
 	fmtStr := fmt.Sprintf("client_id=%s&sign=%s&timestamp=%d&id=%s&access_token=%s&machine_code=%s&img_url=%s", self.Client_id, self.Sign(timestamp), timestamp, uid, self.Access_token, machine_code, img_url)
 	fmt.Println(fmtStr)
@@ -297,7 +297,7 @@ func (self OperationInterface) Seticon(machine_code string, img_url string) {
 
 func (self OperationInterface) DeleteIcon(machine_code string) {
 	url := "https://open-api.10ss.net/printer/deleteicon"
-	uid := uuid.NewV4()
+	uid := uuid.Must(uuid.NewV4())
 	timestamp := time.Now().Unix()
 	fmtStr := fmt.Sprintf("client_id=%s&sign=%s&timestamp=%d&id=%s&access_token=%s&machine_code=%s", self.Client_id, self.Sign(timestamp), timestamp, uid, self.Access_token, machine_code)
 	fmt.Println(fmtStr)
@@ -311,7 +311,7 @@ func (self OperationInterface) DeleteIcon(machine_code string) {
 
 func (self OperationInterface) BtnPrint(machine_code string, response_type string) {
 	url := "https://open-api.10ss.net/printer/btnprint"
-	uid := uuid.NewV4()
+	uid := uuid.Must(uuid.NewV4())
 	timestamp := time.Now().Unix()
 	fmtStr := fmt.Sprintf("client_id=%s&sign=%s&timestamp=%d&id=%s&access_token=%s&machine_code=%s&response_type=%s", self.Client_id, self.Sign(timestamp), timestamp, uid, self.Access_token, machine_code, response_type)
 	fmt.Println(fmtStr)
@@ -325,7 +325,7 @@ func (self OperationInterface) BtnPrint(machine_code string, response_type strin
 
 func (self OperationInterface) GetOrder(machine_code string) {
 	url := "https://open-api.10ss.net/printer/getorder"
-	uid := uuid.NewV4()
+	uid := uuid.Must(uuid.NewV4())
 	timestamp := time.Now().Unix()
 	fmtStr := fmt.Sprintf("client_id=%s&access_token=%s&machine_code=%s&response_type=%s&sign=%s&id=%s&timestamp=%d",
 		self.Client_id, self.Access_token, machine_code, "close", self.Sign(timestamp), uid, timestamp)
