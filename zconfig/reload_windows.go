@@ -1,0 +1,4 @@
+package zconfig
+
+func signalReload() {
+}
