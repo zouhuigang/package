@@ -35,10 +35,9 @@ func init() {
 		panic(err)
 	}
 
-	ROOT = filepath.Dir(filepath.Dir(binaryPath))
-
+	ROOT = filepath.Dir(binaryPath)
 	configPath := ROOT + mainIniPath
-
+	//fmt.Printf("configPath:%s\n",configPath)
 	if !fileExist(configPath) {
 		curDir, _ := os.Getwd()
 		pos := strings.LastIndex(curDir, "src")
