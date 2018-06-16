@@ -34,7 +34,7 @@ type prefixIndex struct {
 	start_index, end_index uint32
 }
 
-type ipSearch struct {
+type IpSearch struct {
 	data               []byte
 	prefixMap          map[uint32]prefixIndex
 	firstStartIpOffset uint32
@@ -43,12 +43,12 @@ type ipSearch struct {
 	prefixCount        uint32
 }
 
-var ips *ipSearch = nil
+var ips *IpSearch = nil
 
-func New() (ipSearch, error) {
+func New(ipDat string) (IpSearch, error) {
 	if ips == nil {
 		var err error
-		ips, err = loadIpDat()
+		ips, err = loadIpDat(ipDat)
 		if err != nil {
 			log.Fatal("the IP Dat loaded failed!")
 			return *ips, err
@@ -57,11 +57,11 @@ func New() (ipSearch, error) {
 	return *ips, nil
 }
 
-func loadIpDat() (*ipSearch, error) {
+func loadIpDat(ipDat string) (*IpSearch, error) {
 
-	p := ipSearch{}
+	p := IpSearch{}
 	//加载ip地址库信息
-	data, err := ioutil.ReadFile("qqzeng.dat")
+	data, err := ioutil.ReadFile(ipDat)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -89,7 +89,7 @@ func loadIpDat() (*ipSearch, error) {
 }
 
 //返回结构体信息
-func (p ipSearch) FindIp(ip string) (pr *IpRecord, err error) {
+func (p IpSearch) FindIp(ip string) (pr *IpRecord, err error) {
 	ipstr := p.Get(ip)
 	ipArr := strings.Split(ipstr, "|")
 	if len(ipArr) != 11 {
@@ -116,7 +116,7 @@ func (p ipSearch) FindIp(ip string) (pr *IpRecord, err error) {
 }
 
 //返回字符串信息
-func (p ipSearch) Get(ip string) string {
+func (p IpSearch) Get(ip string) string {
 	ips := strings.Split(ip, ".")
 	x, _ := strconv.Atoi(ips[0])
 	prefix := uint32(x)
@@ -150,7 +150,7 @@ func (p ipSearch) Get(ip string) string {
 }
 
 // 二分逼近算法
-func (p ipSearch) binarySearch(low uint32, high uint32, k uint32) uint32 {
+func (p IpSearch) binarySearch(low uint32, high uint32, k uint32) uint32 {
 	var M uint32 = 0
 	for low <= high {
 		mid := (low + high) / 2
@@ -172,13 +172,13 @@ func (p ipSearch) binarySearch(low uint32, high uint32, k uint32) uint32 {
 // 只获取结束ip的数值
 // 索引区第left个索引
 // 返回结束ip的数值
-func (p ipSearch) getEndIp(left uint32) uint32 {
+func (p IpSearch) getEndIp(left uint32) uint32 {
 	left_offset := p.firstStartIpOffset + left*12
 	return bytesToLong(p.data[4+left_offset], p.data[5+left_offset], p.data[6+left_offset], p.data[7+left_offset])
 
 }
 
-func (p *ipIndex) getIndex(left uint32, ips *ipSearch) {
+func (p *ipIndex) getIndex(left uint32, ips *IpSearch) {
 	left_offset := ips.firstStartIpOffset + left*12
 	p.startip = bytesToLong(ips.data[left_offset], ips.data[1+left_offset], ips.data[2+left_offset], ips.data[3+left_offset])
 	p.endip = bytesToLong(ips.data[4+left_offset], ips.data[5+left_offset], ips.data[6+left_offset], ips.data[7+left_offset])
@@ -189,7 +189,7 @@ func (p *ipIndex) getIndex(left uint32, ips *ipSearch) {
 // / 返回地址信息
 // / 地址信息的流位置
 // / 地址信息的流长度
-func (p *ipIndex) getLocal(ips *ipSearch) string {
+func (p *ipIndex) getLocal(ips *IpSearch) string {
 	bytes := ips.data[p.local_offset : p.local_offset+p.local_length]
 	return string(bytes)
 
