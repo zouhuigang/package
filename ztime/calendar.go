@@ -269,6 +269,23 @@ func SliptDate(date string) (int, int, int) {
 	return y, m, d
 }
 
+//将int时间戳，分割成y,m,d
+func SplitTimeStampToDate(t int64) (y, m, d int) {
+	st := DateInt64("Y-m-d", t)
+	return SliptDate(st)
+}
+
+//当周周一
+func NowWeekMon(y, m, d int) (y1, m1, d1 int) {
+	_, y = LimitYear(y)
+	_, m = LimitMonth(m)
+	_, d = LimitDay(y, m, d)
+
+	nowweek, _ := SWeek(y, m, d)       //得到给定日期的星期信息
+	y1, m1, d1 = SliptDate(nowweek[0]) //星期一
+	return
+}
+
 //上一周周一
 func PreWeekMon(y, m, d int) (y1, m1, d1 int) {
 	_, y = LimitYear(y)
