@@ -7,6 +7,18 @@ import (
 	"strings"
 )
 
+// //MD5加密
+// //@param			str			需要加密的字符串
+// //@param			salt		盐值
+// //@return			CryptStr	加密后返回的字符串
+// func Md5crypt(str string, salt ...interface{}) (CryptStr string) {
+// 	if l := len(salt); l > 0 {
+// 		slice := make([]string, l+1)
+// 		str = fmt.Sprintf(str+strings.Join(slice, "%v"), salt...)
+// 	}
+// 	return fmt.Sprintf("%x", md5.Sum([]byte(str)))
+// }
+
 //md5 32位 hash值
 func Md5(text string) string {
 	hasher := md5.New()
