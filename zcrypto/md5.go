@@ -4,6 +4,7 @@ import (
 	"crypto/md5"
 	"encoding/hex"
 	"fmt"
+	"io"
 	"strings"
 )
 
@@ -54,4 +55,20 @@ func Md5HexString(md5 [16]byte) (s string) {
 	s = fmt.Sprintf("% x", md5)
 	s = strings.Replace(s, " ", ":", -1)
 	return s
+}
+
+/*文件md5
+f, err := os.Open(*path)
+	if err != nil {
+		fmt.Println("Open", err)
+		return
+	}
+
+	defer f.Close()*/
+func FileToMd5(f io.Reader) (error, string) {
+	hasher := md5.New()
+	if _, err := io.Copy(hasher, f); err != nil {
+		return err, ""
+	}
+	return nil, hex.EncodeToString(hasher.Sum(nil))
 }
