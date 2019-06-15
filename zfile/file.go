@@ -1,9 +1,11 @@
 package zfile
 
 import (
+	"fmt"
 	"os"
 	"path/filepath"
 	"runtime"
+	"strconv"
 	"strings"
 )
 
@@ -85,4 +87,26 @@ func CheckFileName(fileName string) string {
 	// 去除换行符
 	fileName = strings.Replace(fileName, "\n", "", -1)
 	return fileName
+}
+
+//转换字节大小{{FormatByte (Interface2Int .Size)}}
+func FormatByte(size int) string {
+	fsize := float64(size)
+	//字节单位
+	units := [6]string{"B", "KB", "MB", "GB", "TB", "PB"}
+	var i int
+	for i = 0; fsize >= 1024 && i < 5; i++ {
+		fsize /= 1024
+	}
+
+	num := fmt.Sprintf("%.2f", fsize)
+
+	return string(num) + " " + units[i]
+}
+
+//将字符串或者其他可转化数字的内容格式化成int数字类型返回
+//@param        a            interface{}         需要转化成数字的内容
+func Interface2Int(a interface{}) int {
+	i, _ := strconv.Atoi(fmt.Sprintf("%v", a))
+	return i
 }
