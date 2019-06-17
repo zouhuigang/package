@@ -2,6 +2,7 @@ package zfile
 
 import (
 	"fmt"
+	"io"
 	"os"
 	"path/filepath"
 	"runtime"
@@ -15,6 +16,27 @@ func IsFileExist(filename string) bool {
 		return false
 	}
 	return true
+}
+
+/*
+获取文件信息
+type FileInfo interface {
+    Name() string       // 文件的名字（不含扩展名）
+    Size() int64        // 普通文件返回值表示其大小；其他文件的返回值含义各系统不同
+    Mode() FileMode     // 文件的模式位
+    ModTime() time.Time // 文件的修改时间
+    IsDir() bool        // 等价于Mode().IsDir()
+    Sys() interface{}   // 底层数据来源（可以返回nil）
+}
+*/
+func GetFileInfo(filename string) (os.FileInfo, error) {
+	info, err := os.Stat(filename) //Stat获取文件属性
+	if err != nil {
+		return nil, err
+	}
+
+	return info, nil
+
 }
 
 // 判断文件夹是否存在
@@ -109,4 +131,46 @@ func FormatByte(size int) string {
 func Interface2Int(a interface{}) int {
 	i, _ := strconv.Atoi(fmt.Sprintf("%v", a))
 	return i
+}
+
+//复制文件，并重命名，解决一些文件名有空格等特殊符号的问题
+func Copy(src, dest string) error {
+	// Gather file information to set back later.
+	si, err := os.Lstat(src)
+	if err != nil {
+		return err
+	}
+
+	// Handle symbolic link.
+	if si.Mode()&os.ModeSymlink != 0 {
+		target, err := os.Readlink(src)
+		if err != nil {
+			return err
+		}
+		// NOTE: os.Chmod and os.Chtimes don't recoganize symbolic link,
+		// which will lead "no such file or directory" error.
+		return os.Symlink(target, dest)
+	}
+
+	sr, err := os.Open(src)
+	if err != nil {
+		return err
+	}
+	defer sr.Close()
+
+	dw, err := os.Create(dest)
+	if err != nil {
+		return err
+	}
+	defer dw.Close()
+
+	if _, err = io.Copy(dw, sr); err != nil {
+		return err
+	}
+
+	// Set back file information.
+	if err = os.Chtimes(dest, si.ModTime(), si.ModTime()); err != nil {
+		return err
+	}
+	return os.Chmod(dest, si.Mode())
 }
