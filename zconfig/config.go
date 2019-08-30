@@ -8,8 +8,14 @@ import (
 	"path/filepath"
 	"strings"
 	"syscall"
+
 	"github.com/Unknwon/goconfig"
 )
+
+/*
+
+	if runtime.GOOS == "linux" {
+*/
 
 var (
 	ConfigFile *goconfig.ConfigFile
