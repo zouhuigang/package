@@ -17,6 +17,10 @@ func Digits(length int) []byte {
 	return randomBytesMod(length, 10)
 }
 
+func DigitsToString(length int) string {
+	return RandomDigitsToString(randomBytesMod(length, 10))
+}
+
 func randomId() string {
 	b := randomBytesMod(idLen, byte(len(randStr)))
 	for i, c := range b {
@@ -58,4 +62,14 @@ func randomBytes(length int) (b []byte) {
 		panic("captcha: error reading random source: " + err.Error())
 	}
 	return
+}
+
+//将处理过的[]byte转成string
+func RandomDigitsToString(b []byte) string {
+	var numList = []byte("0123456789")
+	var new_byte = make([]byte, len(b))
+	for i, c := range b {
+		new_byte[i] = numList[c]
+	}
+	return string(new_byte)
 }

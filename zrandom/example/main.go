@@ -8,5 +8,6 @@ import (
 
 func main() {
 	s := zrandom.Digits(6)
-	fmt.Println(s)
+	s1 := zrandom.DigitsToString(6)
+	fmt.Println(s, s1)
 }
