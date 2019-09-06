@@ -60,14 +60,25 @@ func Is_email(email string) bool {
 
 //身份证
 func Is_usercard(usercard string) bool {
-	//验证15位身份证，15位的是全部数字
-	if m, _ := regexp.MatchString(`^(\d{15})$`, usercard); !m {
+	// 去除空格
+	idNumber := strings.Replace(usercard, " ", "", -1)
+	// 去除换行符
+	idNumber = strings.Replace(usercard, "\n", "", -1)
+	idLength := len(idNumber)
+	if idLength < 15 {
 		return false
 	}
 
-	//验证18位身份证，18位前17位为数字，最后一位是校验位，可能为数字或字符X。
-	if m, _ := regexp.MatchString(`^(\d{17})([0-9]|X)$`, usercard); !m {
-		return false
+	if idLength == 18 {
+		//验证18位身份证，18位前17位为数字，最后一位是校验位，可能为数字或字符X。
+		if m, _ := regexp.MatchString(`^(\d{17})([0-9]|X)$`, idNumber); !m {
+			return false
+		}
+	} else if idLength == 15 {
+		//验证15位身份证，15位的是全部数字
+		if m, _ := regexp.MatchString(`^(\d{15})$`, idNumber); !m {
+			return false
+		}
 	}
 
 	return true

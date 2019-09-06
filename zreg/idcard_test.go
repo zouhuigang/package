@@ -11,3 +11,14 @@ func Test_p(t *testing.T) {
 	s3, _ := PraseIdCard("130503670401001")
 	fmt.Printf("%v\n%v\n%v\n", s1, s2, s3)
 }
+
+func Test_r(t *testing.T) {
+	s1 := Is_usercard("130503670401001")
+	fmt.Println(s1)
+	s2 := Is_usercard("362202199201016171")
+	fmt.Println(s2)
+	s3 := Is_usercard("3622021s9201016171")
+	fmt.Println(s3)
+	s4 := Is_usercard("13050367b401001")
+	fmt.Println(s4)
+}
