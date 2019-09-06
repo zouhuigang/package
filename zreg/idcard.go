@@ -2,8 +2,12 @@ package zreg
 
 import (
 	"errors"
+	"fmt"
 	"strconv"
 	"strings"
+	"time"
+
+	"github.com/zouhuigang/package/ztime"
 )
 
 /*
@@ -22,11 +26,12 @@ const m_GENDER_FEMALE string = "F" //0
 
 //解析身份证中的信息
 type IdCard struct {
-	Length int
-	Year   string
-	Month  string
-	Day    string
-	Sex    string
+	Length   int
+	Year     string
+	Month    string
+	Day      string
+	Sex      string
+	Birthday time.Time
 }
 
 //解析出性别
@@ -84,6 +89,8 @@ func PraseIdCard(idCard string) (*IdCard, error) {
 	myidcard.Length = idLength
 	myidcard.Sex = getGender(idLength, idNumber)
 	myidcard.Year, myidcard.Month, myidcard.Day = getBirthdayYMD(idLength, idNumber)
+	birthday := fmt.Sprintf("%s-%s-%s", myidcard.Year, myidcard.Month, myidcard.Day)
+	myidcard.Birthday = ztime.Strtotime(birthday)
 
 	return myidcard, nil
 }
