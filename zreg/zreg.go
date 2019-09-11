@@ -4,6 +4,7 @@ import (
 	"net/http"
 	"regexp"
 	"strings"
+	"time"
 )
 
 //去除空字符串
@@ -55,6 +56,54 @@ func Is_email(email string) bool {
 	if m, _ := regexp.MatchString(`^([\w\.\_]{2,10})@(\w{1,}).([a-z]{2,4})$`, email); !m {
 		return false
 	}
+	return true
+}
+
+func Is_LeapYear(year int) bool {
+	//isLeapYear = (year % 4 == 0 && year % 100 != 0) || (year % 400 == 0) //判断是否是闰年
+	if (year%4 == 0 && year%100 != 0) || (year%400 == 0) {
+		return true
+	}
+
+	return false
+}
+
+//得到一个月有多少天
+func getMonthDayNum(year, month int) int {
+	var numberOfDays int
+	if month == 4 || month == 6 || month == 9 || month == 11 {
+		numberOfDays = 30
+	} else if month == 2 {
+		leap := Is_LeapYear(year)
+		if leap {
+			numberOfDays = 29
+		} else {
+			numberOfDays = 28
+		}
+
+	} else {
+		numberOfDays = 31
+	}
+
+	return numberOfDays
+
+}
+
+//验证合法日期
+func IsRealDate(year int, month int, day int) bool {
+	now_year := time.Now().Year()
+	if year > now_year || year <= 1900 { //非法年份
+		return false
+	}
+	if month <= 0 || month > 12 { //非法的月份
+		return false
+	}
+	//判断二月有多少天
+	shouldDay := getMonthDayNum(year, month)
+	if day <= 0 || day > shouldDay {
+		return false
+	}
+
 	return true
 }
 

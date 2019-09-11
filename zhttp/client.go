@@ -214,6 +214,28 @@ func POST(url string, data []byte) ([]byte, error) {
 	return data, nil
 }
 
+func POSTContentType(url string, contentType string, data []byte) ([]byte, error) {
+	resp, err := client.Post(url, contentType, bytes.NewReader(data))
+	if err != nil {
+		//return nil, errs.NewRpcError(errs.ErrInternal, err.Error())
+		return nil, err
+	}
+
+	if resp.StatusCode != http.StatusOK {
+		//return nil, errs.NewRpcError(errs.ErrUnreachable, "status code %d", resp.StatusCode)
+		return nil, err
+	}
+
+	data, err = ioutil.ReadAll(resp.Body)
+	resp.Body.Close()
+	if err != nil {
+		//return nil, errs.NewRpcError(errs.ErrInternal, err.Error())
+		return nil, err
+	}
+
+	return data, nil
+}
+
 func POSTWithUnmarshal(url string, req interface{}, resp interface{}) error {
 	var data []byte
 	var err error

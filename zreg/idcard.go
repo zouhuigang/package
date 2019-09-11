@@ -89,6 +89,25 @@ func PraseIdCard(idCard string) (*IdCard, error) {
 	myidcard.Length = idLength
 	myidcard.Sex = getGender(idLength, idNumber)
 	myidcard.Year, myidcard.Month, myidcard.Day = getBirthdayYMD(idLength, idNumber)
+
+	m_year, err := strconv.Atoi(myidcard.Year)
+	if err != nil {
+		m_year = 0
+	}
+	m_month, err := strconv.Atoi(myidcard.Month)
+	if err != nil {
+		m_year = 0
+	}
+	m_day, err := strconv.Atoi(myidcard.Day)
+	if err != nil {
+		m_year = 0
+	}
+
+	//判断年份是否正确
+	if !IsRealDate(m_year, m_month, m_day) {
+		return nil, errors.New("身份证日期错误")
+	}
+
 	birthday := fmt.Sprintf("%s-%s-%s", myidcard.Year, myidcard.Month, myidcard.Day)
 	myidcard.Birthday = ztime.Strtotime(birthday)
 
